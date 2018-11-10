@@ -1,0 +1,73 @@
+import string
+import random
+
+class encryption:
+
+    def __init__(self,seed):
+        #FIXED THE SEED SO WE GET SAME OUTPUT IN SAME SEED CODE
+        random.seed(seed)
+        self.seed=seed
+
+        #A STRING TO KEEP THE ENCRYPTED PHASE
+        self.encrypted_phrase = ''
+
+        #LIST OF 'a-z'
+        self.true_alphabet = list(string.ascii_lowercase)
+
+        #LIST OF LETTERS RANDOMLY FROM 'a-z'
+        self.rand_alphabet = random.sample(self.true_alphabet,len(self.true_alphabet))
+
+    def encrypt(self,message):
+
+        output = ''
+        ##STEP  1 : WE INSERTED THE RANDOM LETTERS AT EVERY OTHER POSITION
+        ##eXAMPLE : HELLO ---> HUEKLWLQOY
+        for i in range(len(message)):
+            output += message[i]
+            output += random.sample(self.true_alphabet,1)[0]
+
+        ##STEP 2 : REVERSE THE STRING
+        self.encrypted_phrase = output[::-1]
+
+
+        #STEP 3 : NOW WE REPLACE THE EACH LETTER WITH THE CEASER CIPHER RANDOM LETTER
+        encrypted_phase_two = list(range(len(self.encrypted_phrase)))
+
+        for i,letter in enumerate(self.encrypted_phrase.lower()):
+            if letter in self.true_alphabet:
+                index = self.true_alphabet.index(letter)
+                encrypted_phase_two[i]=self.rand_alphabet[index]
+            else:
+                encrypted_phase_two[i] = letter
+
+        self.encrypted_phrase= ''.join(encrypted_phase_two)
+        return self.encrypted_phrase
+
+    def decrypt(self,message,seed):
+        random.seed(seed)
+
+        #GENERATED THE RANDOM LIST OF LETTERS
+        session_rand_alphabet = random.sample(self.true_alphabet,len(self.true_alphabet))
+
+        decrypted_messge = list(range(len(message)))
+
+        #UNDO THE CEASER CIPHER
+        for i,letter in enumerate(message.lower()):
+            if letter in self.true_alphabet:
+                index = session_rand_alphabet.index(letter)
+                decrypted_messge[i] = self.true_alphabet[index]
+            else:
+                decrypted_messge[i] = letter
+
+        #REVERSE THE STRING
+        decrypted_messge = ''.join(decrypted_messge)[::-1]
+
+        #RETURNS THE STRING BY JUMPING OF EVERY 2ND POSITION
+        return decrypted_messge[::2]
+
+
+e = encryption(0)
+print(e.encrypt("Hello World"))
+print(e.decrypt("pbfrhwlcvsr bcwrerligz",0))
+
+

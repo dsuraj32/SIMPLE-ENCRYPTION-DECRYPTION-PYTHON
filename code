@@ -66,6 +66,7 @@ class encryption:
         return decrypted_messge[::2]
 
 
+#BELOW IS A OBJECT IN WHICH WE PASS HELLO WORLD WITH INITIAL SEED 0
 e = encryption(0)
 print(e.encrypt("Hello World"))
 print(e.decrypt("pbfrhwlcvsr bcwrerligz",0))
